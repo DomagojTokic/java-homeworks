@@ -1,0 +1,32 @@
+		jump @pocetak
+
+@nula:		DEFINT	0
+@prvi:		DEFINT	1
+
+@pocetak:	load r0, @nula
+		load r1, @prvi
+		load r2, @nula	;rezultat
+		load r4, @nula	;brojaè
+		load r5, @nula	;default broj ponavljanja
+		load r6, @nula	;pomoæna nula
+		load r8, @poruka
+		echo r8
+		iinput r5	;broj ponavljanja				
+		call @fibonacci
+		echo r2
+		halt
+
+@fibonacci:	testEquals r4, r5
+		jumpIfTrue @return
+		testEquals r4, r6	;za 0-ti fibonacijev broj ne treba posebno racunati
+		jumpIfTrue @nulti
+		add r2, r0, r1
+		move r0, r1
+		move r1, r2
+@nulti:		inc r4
+		call @fibonacci
+@return:	ret
+
+@poruka:	DEFSTR	"Upisite cijeli broj 0-6: "
+		RESERVE:5
+@stackTop:	RESERVE

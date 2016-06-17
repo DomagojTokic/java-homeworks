@@ -1,0 +1,34 @@
+		jump @pocetak
+
+@brojPon:	DEFINT	5
+@nula:		DEFINT	0
+
+@pocetak:	load r2, @brojPon
+		load r3, @nula
+		jump @unos
+@pogreska:	load r8, @porukaPog
+		echo r8
+@unos:		load r0, @poruka
+		echo r0
+		iinput r1
+		jumpIfTrue @pogreska
+		load r0, @porukaRez
+		load r4, @noviRed
+@petlja:	testEquals r2, r3
+		jumpIfTrue @kraj
+		call @ispis
+		jump @petlja
+
+@kraj:		halt
+
+@ispis:		dec r1
+		inc r3
+		echo r1
+		echo r4
+		ret
+		
+@noviRed:	DEFSTR	"\n"
+@poruka:	DEFSTR	"Unesite pocetni broj: "
+@porukaPog:	DEFSTR	"Unos nije moguce protumaciti kao cijeli broj.\n"
+@porukaRez:	DEFSTR	"Sljedecih 5 brojeva je:\n"
+@stackTop:	RESERVE
