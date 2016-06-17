@@ -3,7 +3,7 @@ package hr.fer.zemris.java.tecaj.hw1;
 /**
  * Program which writes n-th number of Hofstadter Q series to standard output.
  * 
- * @author Domagoj TokiĆ
+ * @author Domagoj Tokić
  * 
  */
 
