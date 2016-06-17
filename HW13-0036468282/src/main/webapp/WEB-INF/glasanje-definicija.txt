@@ -1,0 +1,7 @@
+1	AC/DC	https://www.youtube.com/watch?v=pAgnJDJN4VA
+2	Disturbed	https://www.youtube.com/watch?v=09LTT0xwdfw
+3	Pink Floyd	https://www.youtube.com/watch?v=nVhNCTH8pDs
+4	Deep Purple	https://www.youtube.com/watch?v=PfAWReBmxEs
+5	The Police	https://www.youtube.com/watch?v=OMOGaugKpzs
+6	Lynyrd Skynyrd	https://www.youtube.com/watch?v=sHQ_aTjXObs
+7	Metallica	https://www.youtube.com/watch?v=xnKhsTXoKCI
