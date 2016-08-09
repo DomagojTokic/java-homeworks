@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Radimo malo i sa stilovima... -->
+		<!-- Vidi: http://www.w3schools.com/cssref/default.asp -->
+		
+		<meta charset="UTF-8">
+		<title>Galerija</title>
+		
+		<style>
+			img.selected {
+				border: 2px solid red;
+				border-radius: 8px;
+				display: block;
+				margin: 0 auto;
+			}
+			
+			img.thumbnail {
+				border: 2px solid black;
+			}
+		  
+			table {
+				margin-left:auto; 
+				margin-right:auto;
+			}
+		  
+			h3 {
+				font-weight: bold;
+				font-style: italic;
+				text-align: center;
+			}
+		  
+		</style>
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script type="text/javascript" src="js/htmlescaping.js"></script>
+		<script type="text/javascript"><!--
+		  // vidi: http://www.w3schools.com/ajax/default.asp
+
+		  
+		  
+		$(document).ready( 
+			function() {
+				getTags();				
+		  	} 
+		);
+		
+		function getTags() {
+			var xmlhttp;
+			
+			if (window.XMLHttpRequest) {
+				// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp=new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			xmlhttp.onreadystatechange = function() {
+				if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+					var text = xmlhttp.responseText;
+					var tags = JSON.parse(text);
+					for(var i=0; i<tags.length; i++) {
+						addButton(tags[i])
+					}
+				}
+			}
+			xmlhttp.open("GET", "servlets/tags", true);
+			xmlhttp.send();
+		}
+		  
+		function addButton(tag) {
+
+			var element = document.createElement("input");
+			
+			element.setAttribute("type", "button");
+			element.setAttribute("value", tag);
+			element.setAttribute("name", tag);
+			element.setAttribute("id", tag);	
+			element.onclick = function() {
+				setPhotos(tag);
+			};
+
+			var buttons = document.getElementById("buttons");
+			
+			buttons.appendChild(element);
+		}
+		
+		function setPhotos(tag) {
+			document.getElementById("selectedPhoto").innerHTML = "";
+			document.getElementById("photoDescription").innerHTML = "";
+			
+			var xmlhttp;
+			
+			if (window.XMLHttpRequest) {
+				// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp=new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			xmlhttp.onreadystatechange = function() {
+				if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+					var text = xmlhttp.responseText;
+					var photos = JSON.parse(text);
+					
+					var photoPane = document.getElementById("photos");
+					
+					photoPane.innerHTML = "";
+					var html =  "<table><tr>";					
+					
+					for(var i=0; i<photos.length; i++) {
+												var img = "<td><img class=\"thumbnail\" id='" + photos[i] + "' onclick=\"displayPhoto('"+photos[i]+"');\" src=servlets/thumbnail?name=" + photos[i] + "></img></td>";
+						html += img;
+						
+						if((i+1) % 10 == 0) {
+							html += "</tr><tr>";
+						}						
+					}					
+					html += "</tr></table>";
+					
+					photoPane.innerHTML = html			
+				}
+			}
+			xmlhttp.open("GET", "servlets/list?tag=" + tag, true);
+			xmlhttp.send();
+		}
+
+		function displayPhoto(name) {		
+			document.getElementById("photoDescription").innerHTML = "";
+			
+			var xmlhttp;
+			
+			if (window.XMLHttpRequest) {
+				// code for IE7+, Firefox, Chrome, Opera, Safari
+				xmlhttp=new XMLHttpRequest();
+			} else {
+				// code for IE6, IE5
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			
+			xmlhttp.onreadystatechange = function() {
+				if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+					var text = xmlhttp.responseText;
+					document.getElementById("photoDescription").innerHTML = text;			
+				}
+			}
+			xmlhttp.open("GET", "servlets/photodesc?name=" + name, true);
+			xmlhttp.send();
+			
+			var selectedPhoto = document.getElementById("selectedPhoto");
+			selectedPhoto.innerHTML = "<img class=\"selected\" src=servlets/photo?name=" + name + ">";
+		}
+		  
+		  
+		//--></script>
+	</head>
+	<body>
+	
+		<p><span id="buttons">&nbsp;</span></p>
+		
+		<p><span id="photos">&nbsp;</span></p>				
+		
+		<h3><span id="photoDescription">&nbsp;</span></h3>
+		
+		<p><span id="selectedPhoto">&nbsp;</span></p>
+		
+	</body>
+</html>
